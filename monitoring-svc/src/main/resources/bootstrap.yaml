@@ -1,0 +1,37 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: monitoring-svc
+  datasource:
+    url: jdbc:h2:mem:monitoring-svc
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /monitoring-console
+
+zuul:
+  sensitive-headers: Cookie,Set-Cookie
+#  routes:
+#    stub-svc-1:
+#      url: http://localhost:8081
+#      path: /stub1/hello/**
+#      service-id: stub-svc-1
+#      strip-prefix: false
+#    stub-svc-2:
+#      url: http://localhost:8082
+#      path: /stub2/hello/**
+#      service-id: stub-svc-2
+#      strip-prefix: false
+  ignored-services: "*"
+
+ribbon:
+  eureka:
+    enabled: false
+
+
+
