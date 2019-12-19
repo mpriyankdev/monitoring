@@ -26,5 +26,5 @@ public class RegistrationEntity {
     private LocalDateTime effectiveDate;
     @Column(name = "EXPIRATION_DATE")
     private LocalDateTime expirationDate;
-    
+
 }

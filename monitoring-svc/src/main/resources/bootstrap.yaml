@@ -4,6 +4,12 @@ server:
 spring:
   application:
     name: monitoring-svc
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      label: latest
+      name: monitoring-svc
   datasource:
     url: jdbc:h2:mem:monitoring-svc
     driver-class-name: org.h2.Driver
@@ -14,20 +20,27 @@ spring:
       enabled: true
       path: /monitoring-console
 
+management:
+  endpoints:
+    web:
+      base-path: /mgmt
+      exposure:
+        include: "*"
+
 zuul:
   sensitive-headers: Cookie,Set-Cookie
-#  routes:
-#    stub-svc-1:
-#      url: http://localhost:8081
-#      path: /stub1/hello/**
-#      service-id: stub-svc-1
-#      strip-prefix: false
-#    stub-svc-2:
-#      url: http://localhost:8082
-#      path: /stub2/hello/**
-#      service-id: stub-svc-2
-#      strip-prefix: false
-  ignored-services: "*"
+  #  routes:
+  #    stub-svc-1:
+  #      url: http://localhost:8081
+  #      path: /stub1/hello/**
+  #      service-id: stub-svc-1
+  #      strip-prefix: false
+  #    stub-svc-2:
+  #      url: http://localhost:8082
+  #      path: /stub2/hello/**
+  #      service-id: stub-svc-2
+  #      strip-prefix: false
+  #ignored-services: "*"
 
 ribbon:
   eureka:

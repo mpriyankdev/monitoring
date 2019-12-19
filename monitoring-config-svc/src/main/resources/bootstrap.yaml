@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8888
 
 spring:
   application:
@@ -10,6 +10,8 @@ spring:
         jdbc:
           sql: select key , value from CAT1_MONITOR_CONFIG_PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
           order: 1
+  profiles:
+    include: jdbc
   datasource:
     url: jdbc:h2:mem:monitoring-config-svc
     driver-class-name: org.h2.Driver

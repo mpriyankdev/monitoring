@@ -8,6 +8,8 @@ import com.monitor.monitoringconfigsvc.repository.MonitoringConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MonitoringConfigService {
 
@@ -21,6 +23,19 @@ public class MonitoringConfigService {
 
     public MonitoringConfigEntity saveMonitoringConfiguration(final MonitoringConfigModel monitoringConfigModel) {
         return monitoringConfigRepository.save(monitoringConfigModelToMonitoringConfigEntityMapper.map(monitoringConfigModel));
+    }
+
+    public MonitoringConfigEntity viewMonitoringConfiguration(final String configId) {
+
+        final Optional<MonitoringConfigEntity> config = monitoringConfigRepository.findById(configId);
+
+        if (!config.isPresent()) {
+            throw new RuntimeException("No config found with configId : " + configId);
+
+        }
+
+        return config.get();
+
     }
 
 }
