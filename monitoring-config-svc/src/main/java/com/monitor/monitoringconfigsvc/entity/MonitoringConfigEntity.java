@@ -2,7 +2,10 @@ package com.monitor.monitoringconfigsvc.entity;
 
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "CAT1_MONITOR_CONFIG_PROPERTIES")
@@ -15,7 +18,6 @@ public class MonitoringConfigEntity {
 
     @Id
     @Column(name = "CONFIG_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String configId;
     @Column(name = "APPLICATION")
     private String application;
