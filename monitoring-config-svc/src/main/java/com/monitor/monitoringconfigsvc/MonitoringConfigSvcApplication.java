@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class MonitoringConfigSvcApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MonitoringConfigSvcApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MonitoringConfigSvcApplication.class, args);
+    }
 
 }
