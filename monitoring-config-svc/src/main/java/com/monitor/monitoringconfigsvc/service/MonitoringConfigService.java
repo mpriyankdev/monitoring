@@ -3,7 +3,6 @@ package com.monitor.monitoringconfigsvc.service;
 import com.monitor.monitoringconfigsvc.entity.MonitoringConfigEntity;
 import com.monitor.monitoringconfigsvc.mapper.MonitoringConfigEntityToMonitoringConfigModelMapper;
 import com.monitor.monitoringconfigsvc.mapper.MonitoringConfigModelToMonitoringConfigEntityMapper;
-import com.monitor.monitoringconfigsvc.model.MonitoringConfigModel;
 import com.monitor.monitoringconfigsvc.repository.MonitoringConfigRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +20,10 @@ public class MonitoringConfigService {
     private MonitoringConfigEntityToMonitoringConfigModelMapper monitoringConfigEntityToMonitoringConfigModelMapper;
 
 
-    public MonitoringConfigEntity saveMonitoringConfiguration(final MonitoringConfigModel monitoringConfigModel) {
-        return monitoringConfigRepository.save(monitoringConfigModelToMonitoringConfigEntityMapper.map(monitoringConfigModel));
+    public MonitoringConfigEntity saveMonitoringConfiguration(final MonitoringConfigEntity monitoringConfigEntity) {
+
+        return monitoringConfigRepository.save(monitoringConfigEntity);
+
     }
 
     public MonitoringConfigEntity viewMonitoringConfiguration(final String configId) {

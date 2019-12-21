@@ -4,3 +4,10 @@ server:
 spring:
   application:
     name: stub-svc-1
+
+management:
+  endpoints:
+    web:
+      base-path: /mgmt
+      exposure:
+        include: "*"
