@@ -19,8 +19,6 @@ import java.time.LocalDateTime;
 public class OnboardDetailsEntity implements Serializable {
 
     @Id
-    @Column(name = "ONBOARD_ID")
-    private String onboardId;
     @Column(name = "SERVICE_NAME")
     private String serviceName;
     @Column(name = "SERVICE_ID")

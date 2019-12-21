@@ -30,8 +30,8 @@ public class MonitoringHttpClient {
         final ResponseEntity<Map> mapResponseEntity = restTemplate.postForEntity(configSvcUrl, configParams, Map.class);
 
         if (mapResponseEntity.getStatusCode().is2xxSuccessful()) {
-
-            restTemplate.exchange(refreshUrl, HttpMethod.POST, entity, Void.class);
+            System.out.println("lasjkddfhasdkjfsdfjksdjhgsdf");
+            //restTemplate.exchange(refreshUrl, HttpMethod.POST, entity, Void.class);
 
 
         }
