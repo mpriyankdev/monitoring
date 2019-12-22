@@ -8,6 +8,8 @@ import com.monitor.monitoringsvc.repository.MonitoredSvcStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MonitoredSvcStatusService {
 
@@ -26,5 +28,13 @@ public class MonitoredSvcStatusService {
         return monitoredSvcStatusEntityToMonitoredSvcStatusMapper.map(savedEntity);
 
 
+    }
+
+    public MonitoredSvcStatus findMonitoringDetails(String serviceName) {
+        final Optional<MonitoredSvcStatusEntity> byId = monitoredSvcStatusRepository.findById(serviceName);
+        if (!byId.isPresent()) {
+            throw new RuntimeException("serviceId not found with serviceName : " + serviceName);
+        }
+        return monitoredSvcStatusEntityToMonitoredSvcStatusMapper.map(byId.get());
     }
 }

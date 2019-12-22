@@ -25,8 +25,8 @@ public class MonitoredSvcStatusInit {
         registrationService.findAllRegisteredService().stream().forEach(x -> {
             if (x.isMonitoringEnabled()) {
                 monitoredSvcStatus.setServiceName(x.getServiceName());
-                monitoredSvcStatus.setCreatedTs(LocalDateTime.MIN);
-                monitoredSvcStatus.setLastPollTime(LocalDateTime.MIN);
+                monitoredSvcStatus.setCreatedTs(LocalDateTime.now());
+                monitoredSvcStatus.setLastPollTime(LocalDateTime.of(1970 , 12 , 31 , 00 , 00 , 00));
                 monitoredSvcStatus.setServiceStatus("UNDEFINED");
                 monitoredSvcStatus.setServiceDownTime(0L);
                 monitoredSvcStatus.setServiceUpTime(0L);

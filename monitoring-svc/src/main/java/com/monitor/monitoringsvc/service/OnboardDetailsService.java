@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class OnboardDetailsService {
@@ -27,7 +26,6 @@ public class OnboardDetailsService {
 
     public OnboardDetailsEntity onboardService(OnboardDetails onboardDetails) {
         final OnboardDetailsEntity mappedOnboardDetailsEntity = onboardDetailsToOnboardDetailsEntityMapper.map(onboardDetails);
-        mappedOnboardDetailsEntity.setOnboardId(UUID.randomUUID().toString());
         mappedOnboardDetailsEntity.setOnboardTime(LocalDateTime.now());
         mappedOnboardDetailsEntity.setOnboardStatus("NEW");
 
@@ -36,10 +34,10 @@ public class OnboardDetailsService {
         return savedOnboardDetailsEntity;
     }
 
-    public OnboardDetailsEntity onboardServiceStatus(final String onboardId) {
-        final Optional<OnboardDetailsEntity> byId = onboardDetailsRepository.findById(onboardId);
+    public OnboardDetailsEntity onboardServiceStatus(final String serviceName) {
+        final Optional<OnboardDetailsEntity> byId = onboardDetailsRepository.findById(serviceName);
         if (!byId.isPresent()) {
-            throw new RuntimeException("service details not found with onboardId : " + onboardId);
+            throw new RuntimeException("service details not found with serviceName : " + serviceName);
         }
 
         return byId.get();
