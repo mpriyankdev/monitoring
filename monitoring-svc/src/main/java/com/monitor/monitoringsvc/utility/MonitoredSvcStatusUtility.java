@@ -66,12 +66,11 @@ public class MonitoredSvcStatusUtility {
         if (monitoringDetails.getLastPollTime().equals(LocalDateTime.of(1970, 12, 31, 00, 00, 00))) {
             System.out.println("\n\nchecking for the first time");
             monitoringDetails.setLastPollTime(LocalDateTime.now());
+            monitoringDetails.setCreatedTs(LocalDateTime.now());
             monitoringDetails.setServiceUpTime(0L);
             monitoringDetails.setServiceDownTime(0L);
 
         }
-
-        //monitoringDetails.setLastPollTime(LocalDateTime.now());
 
         final LocalDateTime lastPollTime = monitoringDetails.getLastPollTime();
         final LocalDateTime currentTime = LocalDateTime.now();
