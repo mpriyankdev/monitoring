@@ -27,24 +27,13 @@ management:
       exposure:
         include: "*"
 
-zuul:
-  sensitive-headers: Cookie,Set-Cookie
-  #  routes:
-  #    stub-svc-1:
-  #      url: http://localhost:8081
-  #      path: /stub1/hello/**
-  #      service-id: stub-svc-1
-  #      strip-prefix: false
-  #    stub-svc-2:
-  #      url: http://localhost:8082
-  #      path: /stub2/hello/**
-  #      service-id: stub-svc-2
-  #      strip-prefix: false
-  #ignored-services: "*"
-
 ribbon:
   eureka:
     enabled: false
+
+customconfig:
+  monitoring-config-svc-url: http://localhost:8888/config/onboard/map/
+  monitoring-svc-refresh-url: http://localhost:8084/mgmt/refresh
 
 
 
