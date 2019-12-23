@@ -5,10 +5,10 @@ import com.monitor.monitoringsvc.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/service-monitor")
@@ -24,13 +24,5 @@ public class RegistrationController {
         return new ResponseEntity<>(registeredService, HttpStatus.ACCEPTED);
 
     }
-
-    @GetMapping("/register/status")
-    public ResponseEntity<List<Object>> registeredSvcStatus() {
-        //todo : return back all the services along with their status
-        return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
-
-    }
-
-
+    
 }

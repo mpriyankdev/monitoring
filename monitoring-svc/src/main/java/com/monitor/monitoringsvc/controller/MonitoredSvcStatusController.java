@@ -9,15 +9,13 @@ import com.monitor.monitoringsvc.service.MonitoredSvcStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/service-monitor")
+@RequestMapping("/service_monitor")
 public class MonitoredSvcStatusController {
 
     @Autowired
@@ -50,6 +48,19 @@ public class MonitoredSvcStatusController {
         });
 
         return new ResponseEntity<>(realTimeStats, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset_stats/{serviceName}")
+    public ResponseEntity<RealTimeStats> resetRealTimeSvcStatsByServiceName(@PathVariable("serviceName") final String serviceName) {
+
+        final MonitoredSvcStatus monitoringDetails = monitoredSvcStatusService.findMonitoringDetails(serviceName);
+        final MonitoredSvcStatus monitoredSvcStatus = monitoredSvcStatusService.resetSvcStatus(serviceName);
+
+        final RealTimeStats resettedStats = monitoredSvcStatusToRealTimeStatsMapper.map(monitoredSvcStatus);
+
+        return new ResponseEntity<>(resettedStats, HttpStatus.ACCEPTED);
+
+
     }
 
 
