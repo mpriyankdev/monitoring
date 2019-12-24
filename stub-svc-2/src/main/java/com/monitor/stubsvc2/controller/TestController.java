@@ -14,5 +14,16 @@ public class TestController {
     public ResponseEntity<String> test() {
         return new ResponseEntity<>("hello from stub-svc-2", HttpStatus.OK);
     }
+
+    @GetMapping("/hello_ACCEPTED")
+    public ResponseEntity<String> test_accepted() {
+        return new ResponseEntity<>("hello from stub-svc-2", HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/hello_NOCONTENT")
+    public ResponseEntity<String> test_nocontent() {
+        return new ResponseEntity<>("hello from stub-svc-2", HttpStatus.NO_CONTENT);
+    }
+
 }
 

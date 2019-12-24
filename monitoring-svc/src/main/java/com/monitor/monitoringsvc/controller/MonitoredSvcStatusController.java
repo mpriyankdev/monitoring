@@ -1,5 +1,6 @@
 package com.monitor.monitoringsvc.controller;
 
+import com.monitor.monitoringsvc.entity.ResponseStatusStatsEntity;
 import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatsMapper;
 import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatusMapper;
 import com.monitor.monitoringsvc.model.MonitoredSvcStatus;

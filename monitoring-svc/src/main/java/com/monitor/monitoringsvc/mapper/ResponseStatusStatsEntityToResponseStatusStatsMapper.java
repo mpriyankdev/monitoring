@@ -14,6 +14,6 @@ public class ResponseStatusStatsEntityToResponseStatusStatsMapper {
         responseStatusStats.setStatusCode(responseStatusStatsEntity.getStatusCode());
         responseStatusStats.setStatusCount(responseStatusStatsEntity.getStatusCount());
 
-        return new ResponseStatusStats();
+        return responseStatusStats;
     }
 }
