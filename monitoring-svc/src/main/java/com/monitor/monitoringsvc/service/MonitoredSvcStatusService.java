@@ -8,6 +8,7 @@ import com.monitor.monitoringsvc.repository.MonitoredSvcStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -48,5 +49,33 @@ public class MonitoredSvcStatusService {
         });
 
         return monitoredSvcStatuses;
+    }
+
+    public MonitoredSvcStatus resetSvcStatus(final String serviceName) {
+        final Optional<MonitoredSvcStatusEntity> byId = monitoredSvcStatusRepository.findById(serviceName);
+        if (!byId.isPresent()) {
+            throw new RuntimeException("service not found with serviceName :" + serviceName);
+        }
+
+        final MonitoredSvcStatusEntity monitoredSvcStatusEntity = byId.get();
+        final MonitoredSvcStatusEntity monitoredSvcStatusEntityResetted = resetSvc(monitoredSvcStatusEntity);
+        final MonitoredSvcStatusEntity savedObj = monitoredSvcStatusRepository.save(monitoredSvcStatusEntityResetted);
+
+        return monitoredSvcStatusEntityToMonitoredSvcStatusMapper.map(savedObj);
+
+
+    }
+
+    private MonitoredSvcStatusEntity resetSvc(final MonitoredSvcStatusEntity monitoredSvcStatusEntity) {
+
+        monitoredSvcStatusEntity.setServiceStatus("UNDEFINED");
+        monitoredSvcStatusEntity.setServiceUpTime(0L);
+        monitoredSvcStatusEntity.setServiceDownTime(0L);
+        monitoredSvcStatusEntity.setLastPollTime(LocalDateTime.of(1970, 12, 31, 00, 00, 00));
+        monitoredSvcStatusEntity.setCreatedTs(LocalDateTime.now());
+
+        return monitoredSvcStatusEntity;
+
+
     }
 }

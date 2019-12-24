@@ -1,23 +1,24 @@
 package com.monitor.monitoringsvc.controller;
 
+import com.monitor.monitoringsvc.entity.ResponseStatusStatsEntity;
 import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatsMapper;
 import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatusMapper;
 import com.monitor.monitoringsvc.model.MonitoredSvcStatus;
 import com.monitor.monitoringsvc.model.RealTimeStats;
 import com.monitor.monitoringsvc.model.RealTimeStatus;
+import com.monitor.monitoringsvc.model.ResponseStatusStats;
 import com.monitor.monitoringsvc.service.MonitoredSvcStatusService;
+import com.monitor.monitoringsvc.service.ResponseStatusStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/service-monitor")
+@RequestMapping("/service_monitor")
 public class MonitoredSvcStatusController {
 
     @Autowired
@@ -26,6 +27,8 @@ public class MonitoredSvcStatusController {
     private MonitoredSvcStatusToRealTimeStatusMapper monitoredSvcStatusToRealTimeStatusMapper;
     @Autowired
     private MonitoredSvcStatusToRealTimeStatsMapper monitoredSvcStatusToRealTimeStatsMapper;
+    @Autowired
+    private ResponseStatusStatsService responseStatusStatsService;
 
 
     @GetMapping("/current_status")
@@ -50,6 +53,27 @@ public class MonitoredSvcStatusController {
         });
 
         return new ResponseEntity<>(realTimeStats, HttpStatus.OK);
+    }
+
+    @PostMapping("/reset_stats/{serviceName}")
+    public ResponseEntity<RealTimeStats> resetRealTimeSvcStatsByServiceName(@PathVariable("serviceName") final String serviceName) {
+
+        //final MonitoredSvcStatus monitoringDetails = monitoredSvcStatusService.findMonitoringDetails(serviceName);
+        final MonitoredSvcStatus monitoredSvcStatus = monitoredSvcStatusService.resetSvcStatus(serviceName);
+
+        final RealTimeStats resettedStats = monitoredSvcStatusToRealTimeStatsMapper.map(monitoredSvcStatus);
+
+        return new ResponseEntity<>(resettedStats, HttpStatus.ACCEPTED);
+
+
+    }
+
+    @GetMapping("/response_status_stats")
+    public ResponseEntity<List<ResponseStatusStats>> responseStatusStats() {
+
+        final List<ResponseStatusStats> allServiceResponseStats = responseStatusStatsService.findAllServiceResponseStats();
+
+        return new ResponseEntity<>(allServiceResponseStats, HttpStatus.OK);
     }
 
 

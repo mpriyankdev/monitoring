@@ -11,7 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
     @GetMapping("/hello")
-    public ResponseEntity<String> test() {
+    public ResponseEntity<String> test200() {
         return new ResponseEntity<>("hello from stub-svc-1", HttpStatus.OK);
+    }
+
+    @GetMapping("/hello_ACCEPTED")
+    public ResponseEntity<String> test_accepted() {
+        return new ResponseEntity<>("hello from stub-svc-1", HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/hello_NOCONTENT")
+    public ResponseEntity<String> test_nocontent() {
+        return new ResponseEntity<>("hello from stub-svc-1", HttpStatus.NO_CONTENT);
     }
 }
