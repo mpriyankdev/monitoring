@@ -5,7 +5,9 @@ import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatusMapper
 import com.monitor.monitoringsvc.model.MonitoredSvcStatus;
 import com.monitor.monitoringsvc.model.RealTimeStats;
 import com.monitor.monitoringsvc.model.RealTimeStatus;
+import com.monitor.monitoringsvc.model.ResponseStatusStats;
 import com.monitor.monitoringsvc.service.MonitoredSvcStatusService;
+import com.monitor.monitoringsvc.service.ResponseStatusStatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ public class MonitoredSvcStatusController {
     private MonitoredSvcStatusToRealTimeStatusMapper monitoredSvcStatusToRealTimeStatusMapper;
     @Autowired
     private MonitoredSvcStatusToRealTimeStatsMapper monitoredSvcStatusToRealTimeStatsMapper;
+    @Autowired
+    private ResponseStatusStatsService responseStatusStatsService;
 
 
     @GetMapping("/current_status")
@@ -53,7 +57,7 @@ public class MonitoredSvcStatusController {
     @PostMapping("/reset_stats/{serviceName}")
     public ResponseEntity<RealTimeStats> resetRealTimeSvcStatsByServiceName(@PathVariable("serviceName") final String serviceName) {
 
-        final MonitoredSvcStatus monitoringDetails = monitoredSvcStatusService.findMonitoringDetails(serviceName);
+        //final MonitoredSvcStatus monitoringDetails = monitoredSvcStatusService.findMonitoringDetails(serviceName);
         final MonitoredSvcStatus monitoredSvcStatus = monitoredSvcStatusService.resetSvcStatus(serviceName);
 
         final RealTimeStats resettedStats = monitoredSvcStatusToRealTimeStatsMapper.map(monitoredSvcStatus);
@@ -61,6 +65,14 @@ public class MonitoredSvcStatusController {
         return new ResponseEntity<>(resettedStats, HttpStatus.ACCEPTED);
 
 
+    }
+
+    @GetMapping("/response_status_stats")
+    public ResponseEntity<List<ResponseStatusStats>> responseStatusStats() {
+
+        final List<ResponseStatusStats> allServiceResponseStats = responseStatusStatsService.findAllServiceResponseStats();
+
+        return new ResponseEntity<>(allServiceResponseStats, HttpStatus.OK);
     }
 
 
