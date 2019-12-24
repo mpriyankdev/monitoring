@@ -5,6 +5,8 @@ import com.monitor.monitoringsvc.service.ResponseStatusStatsService;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
@@ -12,6 +14,8 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import javax.servlet.http.HttpServletRequest;
 
 public class ResponsePostFilter extends ZuulFilter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponsePostFilter.class);
 
     @Autowired
     private ZuulProperties zuulProperties;
@@ -39,24 +43,23 @@ public class ResponsePostFilter extends ZuulFilter {
     @Override
     public Object run() throws ZuulException {
 
-        System.out.println("\n\n[PRIYANK]ResponsePostFilter invoked\n\n");
         RequestContext context = RequestContext.getCurrentContext();
         HttpServletRequest request = context.getRequest();
 
         final String servletPath = request.getServletPath();
         final int responseStatusCode = context.getResponseStatusCode();
 
-        System.out.println("SERVLET-PATH : "+servletPath);
-        System.out.println("RESPONSE-STATUS : "+responseStatusCode);
+        LOGGER.info("Servlet path : {} and Response status : {}", servletPath, responseStatusCode);
 
         zuulProperties.getRoutes().forEach((k, v) -> {
 
             if (servletPath.startsWith(v.getPath().replace("/**", "/"))) {
-                System.out.println("KEY : " + k + " VALUE : " + v);
 
+                LOGGER.info("Service-name : {} ", k);
                 responseStatusStatsService.saveResponseStats(responseStatusStatsMapper.map(k, responseStatusCode));
+            } else {
+                LOGGER.info("Servlet path : {} not mapped with any service", servletPath);
             }
-
 
         });
 

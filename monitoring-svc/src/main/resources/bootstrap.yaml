@@ -34,6 +34,7 @@ ribbon:
 customconfig:
   monitoring-config-svc-url: http://localhost:8888/config/onboard/map/
   monitoring-svc-refresh-url: http://localhost:8084/mgmt/refresh
+  pollDelay: 10000
 
 
 

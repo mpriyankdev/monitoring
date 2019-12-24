@@ -31,8 +31,6 @@ public class ResponseStatusStatsService {
             listOfResponseStats.add(responseStatusStatsEntityToResponseStatusStatsMapper.map(x));
         });
 
-        listOfResponseStats.forEach(x -> System.out.println("listOfResponseStats : " + x.getServiceName()));
-
         return listOfResponseStats;
 
     }

@@ -1,6 +1,5 @@
 package com.monitor.monitoringsvc.controller;
 
-import com.monitor.monitoringsvc.entity.ResponseStatusStatsEntity;
 import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatsMapper;
 import com.monitor.monitoringsvc.mapper.MonitoredSvcStatusToRealTimeStatusMapper;
 import com.monitor.monitoringsvc.model.MonitoredSvcStatus;
@@ -9,6 +8,8 @@ import com.monitor.monitoringsvc.model.RealTimeStatus;
 import com.monitor.monitoringsvc.model.ResponseStatusStats;
 import com.monitor.monitoringsvc.service.MonitoredSvcStatusService;
 import com.monitor.monitoringsvc.service.ResponseStatusStatsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/service_monitor")
 public class MonitoredSvcStatusController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MonitoredSvcStatusController.class);
 
     @Autowired
     private MonitoredSvcStatusService monitoredSvcStatusService;
@@ -58,9 +61,8 @@ public class MonitoredSvcStatusController {
     @PostMapping("/reset_stats/{serviceName}")
     public ResponseEntity<RealTimeStats> resetRealTimeSvcStatsByServiceName(@PathVariable("serviceName") final String serviceName) {
 
-        //final MonitoredSvcStatus monitoringDetails = monitoredSvcStatusService.findMonitoringDetails(serviceName);
+        LOGGER.info("Resetting stats for {}", serviceName);
         final MonitoredSvcStatus monitoredSvcStatus = monitoredSvcStatusService.resetSvcStatus(serviceName);
-
         final RealTimeStats resettedStats = monitoredSvcStatusToRealTimeStatsMapper.map(monitoredSvcStatus);
 
         return new ResponseEntity<>(resettedStats, HttpStatus.ACCEPTED);
@@ -72,7 +74,6 @@ public class MonitoredSvcStatusController {
     public ResponseEntity<List<ResponseStatusStats>> responseStatusStats() {
 
         final List<ResponseStatusStats> allServiceResponseStats = responseStatusStatsService.findAllServiceResponseStats();
-
         return new ResponseEntity<>(allServiceResponseStats, HttpStatus.OK);
     }
 
