@@ -8,6 +8,7 @@ import com.monitor.monitoringsvc.model.RealTimeStatus;
 import com.monitor.monitoringsvc.model.ResponseStatusStats;
 import com.monitor.monitoringsvc.service.MonitoredSvcStatusService;
 import com.monitor.monitoringsvc.service.ResponseStatusStatsService;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,7 @@ public class MonitoredSvcStatusController {
 
 
     @GetMapping("/current_status")
+    @ApiOperation("real-time service status for the service registered for monitoring")
     public ResponseEntity<List<RealTimeStatus>> realTimeSvcStatus() {
 
         List<RealTimeStatus> realTimeStatuses = new ArrayList<>();
@@ -49,6 +51,7 @@ public class MonitoredSvcStatusController {
     }
 
     @GetMapping("/service_stats")
+    @ApiOperation("real time stats i.e service uptime , downtime and current-status")
     public ResponseEntity<List<RealTimeStats>> realTimeSvcStats() {
         List<RealTimeStats> realTimeStats = new ArrayList<>();
         monitoredSvcStatusService.findAllMonitoredSvcDetails().stream().forEach(x -> {
@@ -59,6 +62,7 @@ public class MonitoredSvcStatusController {
     }
 
     @PostMapping("/reset_stats/{serviceName}")
+    @ApiOperation("reset the service stats i.e service uptime and downtime")
     public ResponseEntity<RealTimeStats> resetRealTimeSvcStatsByServiceName(@PathVariable("serviceName") final String serviceName) {
 
         LOGGER.info("Resetting stats for {}", serviceName);
@@ -71,6 +75,7 @@ public class MonitoredSvcStatusController {
     }
 
     @GetMapping("/response_status_stats")
+    @ApiOperation("aggregated view for service responses. for any service-unavailability , it will be recoreded under default-error")
     public ResponseEntity<List<ResponseStatusStats>> responseStatusStats() {
 
         final List<ResponseStatusStats> allServiceResponseStats = responseStatusStatsService.findAllServiceResponseStats();
