@@ -36,7 +36,7 @@ public class MonitoredSvcStatusUtility {
     public void checkSvcStatus() {
 
         registrationService.findAllRegisteredService().stream().forEach(x -> {
-            if (x.isMonitoringEnabled()) {
+            if (x.isMonitoringEnabled() && x.getRegistrationStatus().equals("REGISTERED")) {
                 final String serviceUrl = onboardDetailsService.onboardServiceStatus(x.getServiceName()).getServiceUrl() + "/mgmt/health/";
                 LOGGER.info("health check URL : {}", serviceUrl);
                 pollSvcHealth(serviceUrl, x.getServiceName());

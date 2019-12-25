@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "CAT1_SERVICE_REGISTER")
@@ -22,9 +21,7 @@ public class RegistrationEntity {
     private String serviceName;
     @Column(name = "MONITORING_ENABLED")
     private boolean monitoringEnabled;
-    @Column(name = "EFFECTIVE_DATE")
-    private LocalDateTime effectiveDate;
-    @Column(name = "EXPIRATION_DATE")
-    private LocalDateTime expirationDate;
+    @Column(name = "REGISTRATION_STATUS")
+    private String registrationStatus;
 
 }

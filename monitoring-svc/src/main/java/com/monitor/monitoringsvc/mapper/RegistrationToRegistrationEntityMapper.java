@@ -4,8 +4,6 @@ import com.monitor.monitoringsvc.entity.RegistrationEntity;
 import com.monitor.monitoringsvc.model.Registration;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class RegistrationToRegistrationEntityMapper {
 
@@ -13,7 +11,7 @@ public class RegistrationToRegistrationEntityMapper {
         final RegistrationEntity registrationEntity = new RegistrationEntity();
         registrationEntity.setServiceName(registration.getServiceName());
         registrationEntity.setMonitoringEnabled(registration.isMonitoringEnabled());
-        registrationEntity.setEffectiveDate(LocalDateTime.now());
+        registrationEntity.setRegistrationStatus(registration.getRegistrationStatus());
 
         return registrationEntity;
 
