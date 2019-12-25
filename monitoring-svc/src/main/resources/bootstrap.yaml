@@ -11,7 +11,7 @@ spring:
       label: latest
       name: monitoring-svc
   datasource:
-    url: jdbc:h2:mem:monitoring-svc
+    url: jdbc:h2:mem:monitoring-svc;DB_CLOSE_DELAY=-1
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -25,7 +25,7 @@ management:
     web:
       base-path: /mgmt
       exposure:
-        include: "*"
+        include: refresh , health , env
 
 ribbon:
   eureka:
@@ -34,6 +34,7 @@ ribbon:
 customconfig:
   monitoring-config-svc-url: http://localhost:8888/config/onboard/map/
   monitoring-svc-refresh-url: http://localhost:8084/mgmt/refresh
+  pollDelay: 10000
 
 
 

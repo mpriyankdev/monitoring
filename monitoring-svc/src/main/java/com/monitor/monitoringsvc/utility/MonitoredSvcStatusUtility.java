@@ -4,6 +4,8 @@ import com.monitor.monitoringsvc.model.MonitoredSvcStatus;
 import com.monitor.monitoringsvc.service.MonitoredSvcStatusService;
 import com.monitor.monitoringsvc.service.OnboardDetailsService;
 import com.monitor.monitoringsvc.service.RegistrationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class MonitoredSvcStatusUtility {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MonitoredSvcStatusUtility.class);
+
     @Autowired
     private MonitoredSvcStatusService monitoredSvcStatusService;
     @Autowired
@@ -27,13 +31,14 @@ public class MonitoredSvcStatusUtility {
     @Autowired
     private RestTemplate restTemplate;
 
+
     @Scheduled(fixedDelay = 10000)
     public void checkSvcStatus() {
 
         registrationService.findAllRegisteredService().stream().forEach(x -> {
-            if (x.isMonitoringEnabled()) {
+            if (x.isMonitoringEnabled() && x.getRegistrationStatus().equals("REGISTERED")) {
                 final String serviceUrl = onboardDetailsService.onboardServiceStatus(x.getServiceName()).getServiceUrl() + "/mgmt/health/";
-                System.out.println("serviceUrl : " + serviceUrl);
+                LOGGER.info("health check URL : {}", serviceUrl);
                 pollSvcHealth(serviceUrl, x.getServiceName());
             }
         });
@@ -47,11 +52,12 @@ public class MonitoredSvcStatusUtility {
             forEntity = restTemplate.getForEntity(serviceUrl, String.class);
         } catch (ResourceAccessException rae) {
             System.out.println("service is down :" + serviceName);
+            LOGGER.info("service is DOWN : {}", serviceName);
             populateServiceStatus(serviceName, "DOWN");
         }
 
         if (forEntity.getStatusCode().is2xxSuccessful()) {
-            System.out.println("service is up : " + serviceName);
+            LOGGER.info("service is UP : {}", serviceName);
             populateServiceStatus(serviceName, "UP");
         }
 
@@ -64,7 +70,7 @@ public class MonitoredSvcStatusUtility {
 
 
         if (monitoringDetails.getLastPollTime().equals(LocalDateTime.of(1970, 12, 31, 00, 00, 00))) {
-            System.out.println("\n\nchecking for the first time");
+            LOGGER.info("Populating default serviceStatus");
             monitoringDetails.setLastPollTime(LocalDateTime.now());
             monitoringDetails.setCreatedTs(LocalDateTime.now());
             monitoringDetails.setServiceUpTime(0L);

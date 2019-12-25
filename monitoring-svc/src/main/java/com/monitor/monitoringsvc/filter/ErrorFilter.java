@@ -13,9 +13,9 @@ import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class ResponsePostFilter extends ZuulFilter {
+public class ErrorFilter extends ZuulFilter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ResponsePostFilter.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ErrorFilter.class);
 
     @Autowired
     private ZuulProperties zuulProperties;
@@ -25,14 +25,15 @@ public class ResponsePostFilter extends ZuulFilter {
     @Autowired
     private ResponseStatusStatsMapper responseStatusStatsMapper;
 
+
     @Override
     public String filterType() {
-        return FilterConstants.POST_TYPE;
+        return FilterConstants.ERROR_TYPE;
     }
 
     @Override
     public int filterOrder() {
-        return 100;
+        return 2;
     }
 
     @Override
@@ -49,19 +50,9 @@ public class ResponsePostFilter extends ZuulFilter {
         final String servletPath = request.getServletPath();
         final int responseStatusCode = context.getResponseStatusCode();
 
-        LOGGER.info("Servlet path : {} and Response status : {}", servletPath, responseStatusCode);
+        LOGGER.info("Error Filter : Servlet path : {} and Response status : {}", servletPath, responseStatusCode);
 
-        zuulProperties.getRoutes().forEach((k, v) -> {
-
-            if (servletPath.startsWith(v.getPath().replace("/**", "/"))) {
-
-                LOGGER.info("Service-name : {} ", k);
-                responseStatusStatsService.saveResponseStats(responseStatusStatsMapper.map(k, responseStatusCode));
-            } else {
-                LOGGER.info("Post Filter : Servlet path : {} not mapped with any service", servletPath);
-            }
-
-        });
+        responseStatusStatsService.saveResponseStats(responseStatusStatsMapper.map("default-error", responseStatusCode));
 
 
         return null;

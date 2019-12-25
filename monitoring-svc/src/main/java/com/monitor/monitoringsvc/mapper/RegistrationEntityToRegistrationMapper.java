@@ -12,6 +12,7 @@ public class RegistrationEntityToRegistrationMapper {
 
         registration.setServiceName(registrationEntity.getServiceName());
         registration.setMonitoringEnabled(registrationEntity.isMonitoringEnabled());
+        registration.setRegistrationStatus(registrationEntity.getRegistrationStatus());
 
         return registration;
     }

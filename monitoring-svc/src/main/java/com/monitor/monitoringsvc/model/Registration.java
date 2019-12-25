@@ -13,4 +13,5 @@ public class Registration {
 
     private String serviceName;
     private boolean monitoringEnabled;
+    private String registrationStatus;
 }
